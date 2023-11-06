@@ -7,15 +7,28 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.method === 'PATCH') {
-    await client.user.update({
-      where: {
-        id: req.body.id
-        //body 말고 query값을 넘겨주고 싶은데 계속 에러가 뜸
-      },
-      data: {
-        name: req.body.name
-      }
-    });
+  if (req.method === "PATCH") {
+    if (req.query.id) {
+      await client.user.update({
+        where: {
+          id: +req.query.id,
+        },
+        data: {
+          name: req.body.name,
+        },
+      });
+      res.json({
+        message: `id: ${req.query.id} updated completely to ${req.body.name}`,
+      });
+    }
+  } else if (req.method === "DELETE") {
+    if (req.query.id) {
+      await client.user.delete({
+        where: {
+          id: +req.query.id,
+        },
+      });
+      res.json({ message: `id: ${req.query.id} deleted completely` });
+    }
   }
 }
