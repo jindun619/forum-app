@@ -1,3 +1,20 @@
+import { useEffect } from "react";
+
+import HomePage from "@/components/Home";
+
+import axios from "axios";
+
 export default function IndexPage() {
-  return <h1>IndexPage Rendered!</h1>;
+  // useEffect(() => {
+  //   axios
+  //     .post("/api/users/haha", {data1: "haha", data2: "hoho"})
+  //     .then((res) => {
+  //       console.log(res);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }, []);
+
+  return <HomePage />;
 }
