@@ -6,6 +6,8 @@ export default function HandleComments() {
   const [createFormData, setCreateFormData] = useState({});
   const [updateFormData, setUpdateFormData] = useState({
     id: "",
+    authorId: "",
+    postId: ""
   });
   const [deleteFormData, setDeleteFormData] = useState({
     id: "",
