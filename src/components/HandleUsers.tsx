@@ -4,7 +4,6 @@ import axios from "axios";
 
 export default function HandleUsers() {
   const [createFormData, setCreateFormData] = useState({ name: "" });
-  const [users, setUsers] = useState([]);
   const [updateFormData, setUpdateFormData] = useState({ id: "", name: "" });
   const [deleteFormData, setDeleteFormData] = useState({ id: "" });
 
@@ -29,7 +28,6 @@ export default function HandleUsers() {
     axios
       .get("/api/users")
       .then((res) => {
-        setUsers(res.data);
         console.log(res);
       })
       .catch((err) => {
@@ -74,6 +72,7 @@ export default function HandleUsers() {
 
   return (
     <>
+      <h1>USERS</h1>
       {/* CREATE */}
       <div>
         <input
