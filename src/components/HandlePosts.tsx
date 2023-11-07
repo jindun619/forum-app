@@ -16,7 +16,7 @@ export default function HandlePosts() {
   });
   const [deleteFormData, setDeleteFormData] = useState({
     id: "",
-  });
+  })
 
   const handleCreateChange = (e: any) => {
     setCreateFormData({
