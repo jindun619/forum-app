@@ -14,13 +14,24 @@ export default async function handler(
           id: +req.query.id,
         },
         data: {
-          authorId: req.body.authorId,
+          authorId: +req.body.authorId,
           title: req.body.title,
           content: req.body.title,
         },
       });
       res.json({
         message: `post named '${req.body.title}' has updated completely`,
+      });
+    }
+  } else if (req.method === "DELETE") {
+    if (req.query.id) {
+      await client.post.delete({
+        where: {
+          id: +req.query.id,
+        },
+      });
+      res.json({
+        message: `post with ${req.query.id} has been deleted successfully`,
       });
     }
   }

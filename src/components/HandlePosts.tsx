@@ -14,6 +14,9 @@ export default function HandlePosts() {
     title: "",
     content: "",
   });
+  const [deleteFormData, setDeleteFormData] = useState({
+    id: "",
+  });
 
   const handleCreateChange = (e: any) => {
     setCreateFormData({
@@ -54,6 +57,23 @@ export default function HandlePosts() {
   const handleUpdateSubmit = () => {
     axios
       .patch(`/api/posts/${updateFormData.id}`, updateFormData)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleDeleteChange = (e: any) => {
+    setDeleteFormData({
+      id: e.target.value,
+    });
+  };
+
+  const handleDeleteSubmit = () => {
+    axios
+      .delete(`/api/posts/${deleteFormData.id}`)
       .then((res) => {
         console.log(res);
       })
@@ -118,6 +138,14 @@ export default function HandlePosts() {
           onChange={handleUpdateChange}
         />
         <button onClick={handleUpdateSubmit}>포스트 업데이트</button>
+      </div>
+      <div>
+        <input
+          type="text"
+          placeholder="Post Id"
+          onChange={handleDeleteChange}
+        />
+        <button onClick={handleDeleteSubmit}>포스트 제거</button>
       </div>
     </>
   );
