@@ -2,17 +2,10 @@ import { useState, useEffect } from "react";
 
 import axios from "axios";
 
-export default function HandlePosts() {
-  const [createFormData, setCreateFormData] = useState({
-    authorId: "",
-    title: "",
-    content: "",
-  });
+export default function HandleComments() {
+  const [createFormData, setCreateFormData] = useState({});
   const [updateFormData, setUpdateFormData] = useState({
     id: "",
-    authorId: "",
-    title: "",
-    content: "",
   });
   const [deleteFormData, setDeleteFormData] = useState({
     id: "",
@@ -27,7 +20,7 @@ export default function HandlePosts() {
 
   const handleCreateSubmit = () => {
     axios
-      .post("/api/posts", createFormData)
+      .post("/api/comments", createFormData)
       .then((res) => {
         console.log(res);
       })
@@ -38,7 +31,7 @@ export default function HandlePosts() {
 
   const handleReadSubmit = () => {
     axios
-      .get("/api/posts")
+      .get("/api/comments")
       .then((res) => {
         console.log(res);
       })
@@ -56,7 +49,7 @@ export default function HandlePosts() {
 
   const handleUpdateSubmit = () => {
     axios
-      .patch(`/api/posts/${updateFormData.id}`, updateFormData)
+      .patch(`/api/comments/${updateFormData.id}`, updateFormData)
       .then((res) => {
         console.log(res);
       })
@@ -73,7 +66,7 @@ export default function HandlePosts() {
 
   const handleDeleteSubmit = () => {
     axios
-      .delete(`/api/posts/${deleteFormData.id}`)
+      .delete(`/api/comments/${deleteFormData.id}`)
       .then((res) => {
         console.log(res);
       })
@@ -84,7 +77,7 @@ export default function HandlePosts() {
 
   return (
     <>
-      <h1>POSTS</h1>
+      <h1>COMMENTS</h1>
       {/* CREATE */}
       <div>
         <input
@@ -95,8 +88,8 @@ export default function HandlePosts() {
         />
         <input
           type="text"
-          name="title"
-          placeholder="Title"
+          name="postId"
+          placeholder="Post Id"
           onChange={handleCreateChange}
         />
         <input
@@ -105,18 +98,18 @@ export default function HandlePosts() {
           placeholder="Content"
           onChange={handleCreateChange}
         />
-        <button onClick={handleCreateSubmit}>포스트 생성</button>
+        <button onClick={handleCreateSubmit}>커멘트 생성</button>
       </div>
       {/* READ */}
       <div>
-        <button onClick={handleReadSubmit}>포스트 불러오기</button>
+        <button onClick={handleReadSubmit}>커멘트 불러오기</button>
       </div>
       {/* UPDATE */}
       <div>
         <input
           type="text"
           name="id"
-          placeholder="id"
+          placeholder="comment id"
           onChange={handleUpdateChange}
         />
         <input
@@ -127,8 +120,8 @@ export default function HandlePosts() {
         />
         <input
           type="text"
-          name="title"
-          placeholder="Title"
+          name="postId"
+          placeholder="Post Id"
           onChange={handleUpdateChange}
         />
         <input
@@ -137,16 +130,16 @@ export default function HandlePosts() {
           placeholder="Content"
           onChange={handleUpdateChange}
         />
-        <button onClick={handleUpdateSubmit}>포스트 업데이트</button>
+        <button onClick={handleUpdateSubmit}>커멘트 업데이트</button>
       </div>
       {/* DELETE */}
       <div>
         <input
           type="text"
-          placeholder="Post Id"
+          placeholder="Comment Id"
           onChange={handleDeleteChange}
         />
-        <button onClick={handleDeleteSubmit}>포스트 제거</button>
+        <button onClick={handleDeleteSubmit}>커멘트 제거</button>
       </div>
     </>
   );
