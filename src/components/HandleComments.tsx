@@ -8,7 +8,6 @@ export default function HandleComments() {
     id: "",
     content: "",
     authorId: "",
-    postId: "",
   });
   const [deleteFormData, setDeleteFormData] = useState({
     id: "",
@@ -123,12 +122,6 @@ export default function HandleComments() {
           type="text"
           name="authorId"
           placeholder="Author Id"
-          onChange={handleUpdateChange}
-        />
-        <input
-          type="text"
-          name="postId"
-          placeholder="Post Id"
           onChange={handleUpdateChange}
         />
         <input
