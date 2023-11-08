@@ -15,8 +15,9 @@ export default async function handler(
         },
         data: {
           content: req.body.content,
-          // authorId: +req.body.authorId,
-          postId: +req.body.postId,
+          authorId: +req.body.authorId,
+          // postId: +req.body.postId,
+          postId: 1,
         },
       });
       res.json({
