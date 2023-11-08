@@ -1,6 +1,7 @@
 import HandleUsers from "./HandleUsers";
 import HandlePosts from "./HandlePosts";
 import HandleComments from "./HandleComments";
+import Login from "./Login";
 
 export default function HomePage() {
   return (
@@ -8,6 +9,7 @@ export default function HomePage() {
       <HandleUsers />
       <HandlePosts />
       <HandleComments />
+      <Login />
     </>
   );
 }
