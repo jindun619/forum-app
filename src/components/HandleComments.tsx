@@ -8,7 +8,7 @@ export default function HandleComments() {
     id: "",
     content: "",
     authorId: "",
-    postId: ""
+    postId: "",
   });
   const [deleteFormData, setDeleteFormData] = useState({
     id: "",
@@ -49,6 +49,10 @@ export default function HandleComments() {
       [e.target.name]: e.target.value,
     });
   };
+
+  useEffect(() => {
+    console.log(updateFormData);
+  }, [updateFormData]);
 
   const handleUpdateSubmit = () => {
     axios
