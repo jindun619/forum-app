@@ -26,3 +26,5 @@ export default async function handler(
     res.json(posts);
   }
 }
+
+//why?
