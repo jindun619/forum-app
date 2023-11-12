@@ -15,7 +15,7 @@ export default async function handler(
         },
         data: {
           content: req.body.content,
-          authorId: +req.body.authorId,
+          userId: req.body.authorId,
         },
       });
       res.json({
