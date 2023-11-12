@@ -1,6 +1,6 @@
 import { useSession, signIn, signOut } from "next-auth/react";
 
-export default function Component() {
+export default function Login() {
   const { data: session } = useSession();
   const { status: status } = useSession();
   console.log(status);
@@ -16,7 +16,7 @@ export default function Component() {
   return (
     <>
       Not signed in <br />
-      <button onClick={() => signIn()}>Sign in</button>
+      <button onClick={() => signIn("naver")}>Sign in</button>
     </>
   );
 }
