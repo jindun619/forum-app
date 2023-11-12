@@ -14,7 +14,7 @@ export default async function handler(
           id: +req.query.id,
         },
         data: {
-          authorId: +req.body.authorId,
+          userId: req.body.authorId,
           title: req.body.title,
           content: req.body.content,
         },
