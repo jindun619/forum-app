@@ -10,9 +10,9 @@ export default async function handler(
   if (req.method === "POST") {
     const comment = {
       content: req.body.content,
-      author: {
+      user: {
         connect: {
-          id: +req.body.authorId,
+          id: req.body.authorId,
         },
       },
       post: {
@@ -26,7 +26,7 @@ export default async function handler(
     });
     res.json({ message: req.body });
   } else if (req.method === "GET") {
-    const comments = await client.comment.findMany()
-    res.json(comments)
+    const comments = await client.comment.findMany();
+    res.json(comments);
   }
 }
