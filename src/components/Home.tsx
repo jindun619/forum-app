@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 
+import { GetServerSideProps } from "next";
+
 import axios from "axios";
 
 import HandleUsers from "./HandleUsers";
@@ -7,18 +9,8 @@ import HandlePosts from "./HandlePosts";
 import HandleComments from "./HandleComments";
 import Login from "./Login";
 
-export default function HomePage() {
-  useEffect(() => {
-    axios
-      .get("/api/posts")
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
+export default function HomePage({ data }: { data: any }) {
+  console.log(data);
   return (
     <>
       {/* <HandleUsers />
@@ -28,3 +20,13 @@ export default function HomePage() {
     </>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  const res = await axios.get("/api/posts");
+  const data = res.data;
+  return {
+    props: {
+      data,
+    },
+  };
+};
