@@ -11,7 +11,7 @@ export default async function handler(
     if (req.query.id) {
       await client.user.update({
         where: {
-          id: +req.query.id,
+          id: req.query.id.toString(),
         },
         data: {
           name: req.body.name,
@@ -25,7 +25,7 @@ export default async function handler(
     if (req.query.id) {
       await client.user.delete({
         where: {
-          id: +req.query.id,
+          id: req.query.id.toString(),
         },
       });
       res.json({ message: `id: ${req.query.id} deleted completely` });
