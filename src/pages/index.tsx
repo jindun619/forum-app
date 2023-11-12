@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 
+import Link from "next/link";
+
 import axios from "axios";
 
 import Login from "@/components/Login";
@@ -20,6 +22,9 @@ export default function IndexPage() {
   return (
     <>
       <Login />
+      <div>
+        <Link href="/write">Go To Write.tsx</Link>
+      </div>
       <div>
         {posts
           ? posts.map((v: any, i: any) => (
