@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 
-export default function postPage() {
+export default function PostPage() {
   const router = useRouter();
   return (
     <>
