@@ -10,10 +10,10 @@ export default async function handler(
   if (req.method === "POST") {
     const post = {
       title: req.body.title,
-      content: req.body.title,
-      author: {
+      content: req.body.content,
+      user: {
         connect: {
-          id: +req.body.authorId,
+          id: req.body.userId,
         },
       },
     };
