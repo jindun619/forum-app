@@ -58,7 +58,7 @@ export default function PostPage() {
   };
 
   if (post === null) {
-    return <h1>Post doesn't exist!</h1>;
+    return <h1>{"Post doesn't exist!"}</h1>;
   } else if (post) {
     const date = new Date(post.date).toString();
     return (
