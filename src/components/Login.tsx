@@ -1,11 +1,8 @@
 import { useSession, signIn, signOut } from "next-auth/react";
 
 export default function Login() {
-  const { data: session } = useSession();
-  const { status: status } = useSession();
-  console.log(status);
+  const { data: session, status } = useSession();
   if (session) {
-    console.log(session);
     return (
       <>
         Welcome, {session.user?.name} <br />

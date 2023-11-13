@@ -38,10 +38,6 @@ export default function WritePage() {
     }
   };
 
-  useEffect(() => {
-    console.log(inputForm);
-  }, [inputForm]);
-
   if (status === "unauthenticated") {
     return (
       <>
