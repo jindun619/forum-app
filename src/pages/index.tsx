@@ -5,6 +5,7 @@ import Link from "next/link";
 import axios from "axios";
 
 import Login from "@/components/Login";
+import PostCard from "@/components/PostCard";
 
 export default function IndexPage() {
   const [posts, setPosts] = useState<any>();
@@ -21,18 +22,10 @@ export default function IndexPage() {
   }, []);
   return (
     <>
-      <Login />
-      <div>
-        <Link href="/write">Go To Write.tsx</Link>
-      </div>
       <div>
         {posts
           ? posts.map((v: any, i: any) => (
-              <div key={i}>
-                <h1>{v.title}</h1>
-                <h3>{v.content}</h3>
-                <p>{`author: ${v.userId}`}</p>
-              </div>
+              <PostCard key={i} data={v} />
             ))
           : ""}
       </div>
