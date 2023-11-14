@@ -1,10 +1,8 @@
 import { useState, useEffect } from "react";
 
-import { useSession } from "next-auth/react";
+import { useSession, signIn } from "next-auth/react";
 
 import axios from "axios";
-
-import Login from "@/components/Login";
 
 export default function WritePage() {
   const { data: session, status } = useSession();
@@ -39,34 +37,34 @@ export default function WritePage() {
   };
 
   if (status === "unauthenticated") {
+    signIn("naver");
     return (
       <>
         <h1>please log in</h1>
-        <Login />
       </>
     );
   } else {
     return (
       <>
         {/* INPUTS */}
-        <div>
+        <div className="mt-10 max-w-md mx-auto">
           <input
             type="text"
             placeholder="Title"
             name="title"
             onChange={handleChange}
-            style={{ display: "block" }}
+            className="block input border-2 border-neutral w-full"
           />
           <textarea
             placeholder="Content"
             name="content"
             onChange={handleChange}
-            style={{ display: "block" }}
+            className="mt-3 block textarea border-2 border-neutral w-full"
           />
           <input
             type="submit"
             onClick={handleClick}
-            style={{ display: "block" }}
+            className="mt-3 btn btn-neutral text-xl"
           />
         </div>
       </>

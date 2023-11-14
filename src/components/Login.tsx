@@ -7,7 +7,7 @@ export default function Login() {
     return (
       <>
         <button className="btn btn-ghost text-xl" onClick={() => signOut()}>
-          Sign out
+          로그아웃
         </button>
       </>
     );
@@ -15,7 +15,7 @@ export default function Login() {
   return (
     <>
       <button className="btn btn-ghost text-xl" onClick={() => signIn("naver")}>
-        Sign in
+        로그인
       </button>
     </>
   );

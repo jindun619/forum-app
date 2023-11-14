@@ -8,16 +8,16 @@ export default function Navbar() {
   const { data: session } = useSession();
 
   return (
-    <div className="navbar bg-primary">
+    <div className="navbar bg-neutral text-neutral-content">
       <div className="navbar-start">
         <Link className="btn btn-ghost text-xl" href="/">
-          홈
+          조성민 연구소
         </Link>
       </div>
       <div className="navbar-end">
         {session ? (
           <div className="flex">
-            <div className="h-10">
+            <div className="h-8 mr-1">
               <img
                 className="w-full h-full rounded-full"
                 src={session.user.image}

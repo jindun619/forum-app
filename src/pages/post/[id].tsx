@@ -60,19 +60,21 @@ export default function PostPage() {
   } else if (post) {
     const date = new Date(post.date).toISOString().substring(0, 10);
     return (
-      <>
+      <div>
         <h4>postId: {post.id}</h4>
         <p className="text-5xl font-bold mb-10">{post.title}</p>
         <p className="text-slate-600 font-bold">{`${post.userId} · ${date}`}</p>
-        <p className="text-2xl leading-10">{post.content}</p>
+        <p className="text-xl leading-10">{post.content}</p>
         {status === "authenticated" ? (
-          <button className="btn btn-secondary" onClick={handleClick}>
+          <button
+            className="mt-5 btn btn-neutral text-neutral-content text-xl"
+            onClick={handleClick}>
             삭제
           </button>
         ) : (
           ""
         )}
-      </>
+      </div>
     );
   } else {
     return <h1>Loading..</h1>;

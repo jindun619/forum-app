@@ -22,9 +22,14 @@ export default function IndexPage() {
   return (
     <>
       <div className="mt-10">
-        <Link className="btn btn-secondary text-xl" href="/write">
+        <Link
+          className="mb-3 btn btn-neutral text-neutral-content text-xl"
+          href="/write">
           작성
         </Link>
+        <p className="pl-5 text-base text-slate-500">
+          총 {posts ? posts.length : 0}개의 게시물
+        </p>
         {posts
           ? posts.map((v: any, i: any) => <PostCard key={i} data={v} />)
           : ""}
