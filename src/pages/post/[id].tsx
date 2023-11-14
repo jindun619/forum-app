@@ -6,8 +6,6 @@ import { useSession } from "next-auth/react";
 
 import axios from "axios";
 
-import Login from "@/components/Login";
-
 export default function PostPage() {
   const router = useRouter();
   const { data: session, status } = useSession();
@@ -60,17 +58,17 @@ export default function PostPage() {
   if (post === null) {
     return <h1>{"Post doesn't exist!"}</h1>;
   } else if (post) {
-    const date = new Date(post.date).toString();
+    const date = new Date(post.date).toISOString().substring(0, 10);
     return (
       <>
-        <Login />
         <h4>postId: {post.id}</h4>
-        <h1>{post.title}</h1>
-        <h3>{post.content}</h3>
-        <h3>{date}</h3>
-        <h4>userId: {post.userId}</h4>
+        <p className="text-5xl font-bold mb-10">{post.title}</p>
+        <p className="text-slate-600 font-bold">{`${post.userId} · ${date}`}</p>
+        <p className="text-2xl leading-10">{post.content}</p>
         {status === "authenticated" ? (
-          <input type="submit" value="삭제" onClick={handleClick} />
+          <button className="btn btn-secondary" onClick={handleClick}>
+            삭제
+          </button>
         ) : (
           ""
         )}

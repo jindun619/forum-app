@@ -4,7 +4,6 @@ import Link from "next/link";
 
 import axios from "axios";
 
-import Login from "@/components/Login";
 import PostCard from "@/components/PostCard";
 
 export default function IndexPage() {
@@ -22,11 +21,12 @@ export default function IndexPage() {
   }, []);
   return (
     <>
-      <div>
+      <div className="mt-10">
+        <Link className="btn btn-secondary text-xl" href="/write">
+          작성
+        </Link>
         {posts
-          ? posts.map((v: any, i: any) => (
-              <PostCard key={i} data={v} />
-            ))
+          ? posts.map((v: any, i: any) => <PostCard key={i} data={v} />)
           : ""}
       </div>
     </>

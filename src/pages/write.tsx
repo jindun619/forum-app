@@ -48,9 +48,6 @@ export default function WritePage() {
   } else {
     return (
       <>
-        <h1>write page</h1>
-        <h1>authenticated, hello {session?.user?.name}</h1>
-        <Login />
         {/* INPUTS */}
         <div>
           <input

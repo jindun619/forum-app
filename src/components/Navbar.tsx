@@ -15,9 +15,6 @@ export default function Navbar() {
         </Link>
       </div>
       <div className="navbar-end">
-        <Link className="btn btn-ghost text-xl" href="/write">
-          작성
-        </Link>
         {session ? (
           <div className="flex">
             <div className="h-10">
