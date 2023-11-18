@@ -18,15 +18,21 @@ export default function PostPage() {
     userId: string;
   };
 
+  type UserDataType = {
+    name: string;
+    image: string;
+  };
+
   const [post, setPost] = useState<PostType>();
+  const [userData, setUserData] = useState<UserDataType>();
 
   useEffect(() => {
     if (router.query.id) {
       axios
         .get(`/api/posts/${router.query.id}`)
         .then((res) => {
-          console.log(res.data.post);
           setPost(res.data.post);
+          console.log(res.data.post);
         })
         .catch((err) => {
           console.log(err);
@@ -35,10 +41,17 @@ export default function PostPage() {
   }, [router.query.id]);
 
   useEffect(() => {
-    if (session) {
-      console.log(session.user.sub);
+    if (post) {
+      axios
+        .get(`/api/users/${post.userId}`)
+        .then((res) => {
+          setUserData(res.data.userData);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
-  }, [session]);
+  }, [post]);
 
   const handleClick = (e: any) => {
     if (session?.user.sub !== post?.userId) {
@@ -57,13 +70,12 @@ export default function PostPage() {
 
   if (post === null) {
     return <h1>{"Post doesn't exist!"}</h1>;
-  } else if (post) {
+  } else if (post && userData) {
     const date = new Date(post.date).toISOString().substring(0, 10);
     return (
       <div>
-        <h4>postId: {post.id}</h4>
-        <p className="text-5xl font-bold mb-10">{post.title}</p>
-        <p className="text-slate-600 font-bold">{`${post.userId} · ${date}`}</p>
+        <p className="mt-10 text-5xl font-bold mb-10">{post.title}</p>
+        <p className="text-slate-600 font-bold">{`${userData.name} · ${date}`}</p>
         <p className="text-xl leading-10">{post.content}</p>
         {status === "authenticated" ? (
           <button
@@ -74,6 +86,7 @@ export default function PostPage() {
         ) : (
           ""
         )}
+        <h4>postId: {post.id}</h4>
       </div>
     );
   } else {

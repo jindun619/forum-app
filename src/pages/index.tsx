@@ -8,6 +8,8 @@ import PostCard from "@/components/PostCard";
 
 export default function IndexPage() {
   const [posts, setPosts] = useState<any>();
+  const [names, setNames] = useState<any>([]);
+
   useEffect(() => {
     axios
       .get("/api/posts")
@@ -19,6 +21,22 @@ export default function IndexPage() {
         console.log(err);
       });
   }, []);
+
+  useEffect(() => {
+    if (posts) {
+      posts.map((v: any) => {
+        axios
+          .get(`/api/users/${v.userId}`)
+          .then((res) => {
+            setNames([...names, res.data.userData.name]);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      });
+    }
+  }, [posts]);
+
   return (
     <>
       <div className="mt-10">
@@ -31,7 +49,9 @@ export default function IndexPage() {
           총 {posts ? posts.length : 0}개의 게시물
         </p>
         {posts
-          ? posts.map((v: any, i: any) => <PostCard key={i} data={v} />)
+          ? posts.map((v: any, i: any) => (
+              <PostCard key={i} data={v} userName={names[i]} />
+            ))
           : ""}
       </div>
     </>

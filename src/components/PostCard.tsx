@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-export default function PostCard({ data }: any) {
+export default function PostCard({ data, userName }: any) {
   const date = new Date(data.date).toISOString().substring(0, 10);
   return (
     <div className="p-5 border-t border-neutral-content hover:bg-base-200">
@@ -11,7 +11,7 @@ export default function PostCard({ data }: any) {
             ? `${data.content.substring(0, 40)} ...`
             : data.content}
         </p>
-        <p className="text-lg text-slate-500">{`${data.userId} · ${date}`}</p>
+        <p className="text-lg text-slate-500">{`${userName} · ${date}`}</p>
       </Link>
     </div>
   );

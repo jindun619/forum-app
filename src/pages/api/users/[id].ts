@@ -7,7 +7,16 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.method === "PATCH") {
+  if (req.method === "GET") {
+    if (req.query.id && typeof req.query.id === "string") {
+      const userData = await client.user.findUnique({
+        where: {
+          id: req.query.id,
+        },
+      });
+      res.json({userData})
+    }
+  } else if (req.method === "PATCH") {
     if (req.query.id) {
       await client.user.update({
         where: {
