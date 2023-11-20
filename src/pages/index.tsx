@@ -23,7 +23,7 @@ export default function IndexPage() {
   }, []);
 
   useEffect(() => {
-    if (posts) {
+    if (posts && names.length < posts.length) {
       posts.map((v: any) => {
         axios
           .get(`/api/users/${v.userId}`)
@@ -35,7 +35,7 @@ export default function IndexPage() {
           });
       });
     }
-  }, [posts]);
+  }, [posts, names]);
 
   return (
     <>
