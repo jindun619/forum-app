@@ -89,23 +89,28 @@ export default function UpdatePage() {
     );
   } else {
     return (
-      <>
-        <Login />
+      <div className="mt-10 max-w-md mx-auto">
         <input
           type="text"
           value={inputForm.title}
+          placeholder="Title"
           name="title"
           onChange={handleChange}
-          style={{ display: "block" }}
+          className="block input border-2 border-neutral w-full"
         />
         <textarea
           value={inputForm.content}
+          placeholder="Content"
           name="content"
           onChange={handleChange}
-          style={{ display: "block" }}
+          className="mt-3 block textarea border-2 border-neutral w-full h-96"
         />
-        <input type="submit" onClick={handleClick} />
-      </>
+        <input
+          type="submit"
+          onClick={handleClick}
+          className="mt-3 btn btn-neutral text-xl"
+        />
+      </div>
     );
   }
 }

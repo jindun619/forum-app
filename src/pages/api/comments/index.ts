@@ -12,7 +12,7 @@ export default async function handler(
       content: req.body.content,
       user: {
         connect: {
-          id: req.body.authorId,
+          id: req.body.userId,
         },
       },
       post: {

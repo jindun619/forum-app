@@ -59,7 +59,7 @@ export default function WritePage() {
             placeholder="Content"
             name="content"
             onChange={handleChange}
-            className="mt-3 block textarea border-2 border-neutral w-full"
+            className="mt-3 block textarea border-2 border-neutral w-full h-96"
           />
           <input
             type="submit"
