@@ -12,7 +12,9 @@ import prisma from "@/lib/db";
 
 import { getUserNameByUserId } from "@/utils/prisma";
 
-export default function PostPage({ post }: any) {
+export default function PostPage({ post, comments }: any) {
+  console.log(comments);
+
   const router = useRouter();
   const { data: session, status } = useSession();
 
@@ -87,17 +89,28 @@ export default function PostPage({ post }: any) {
         )}
         {/* COMMENTS */}
         {status === "authenticated" ? (
-          <div className="mt-5 pt-5 border-t-2">
-            <textarea
-              placeholder="댓글 작성"
-              className="textarea border-2 border-neutral w-full text-lg"
-              onChange={handleCommentChange}
-            />
-            <button
-              className="btn btn-neutral text-neutral-content text-xl"
-              onClick={handleCommentClick}>
-              작성
-            </button>
+          <div>
+            <div className="mt-5 pt-5 border-t-2">
+              <textarea
+                placeholder="댓글 작성"
+                className="textarea border-2 border-neutral w-full text-lg"
+                onChange={handleCommentChange}
+              />
+              <button
+                className="btn btn-neutral text-neutral-content text-xl"
+                onClick={handleCommentClick}>
+                작성
+              </button>
+            </div>
+            {comments.map((v: any, i: any) => (
+              <div>
+                <p key={i}>
+                  {v.content}
+                  {v.userName}
+                  {v.date}
+                </p>
+              </div>
+            ))}
           </div>
         ) : (
           ""
@@ -118,6 +131,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         id: +query.id,
       },
     });
+    const comments = await prisma.comment.findMany({
+      where: {
+        postId: +query.id,
+      },
+    });
+
     if (post) {
       const userName = await getUserNameByUserId(post.userId);
 
@@ -127,9 +146,22 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         userName: userName,
       };
 
+      const newComments = await Promise.all(
+        comments.map(async (comment) => {
+          const userName = await getUserNameByUserId(comment.userId);
+
+          return {
+            ...comment,
+            date: comment.date.toISOString(),
+            userName: userName,
+          };
+        })
+      );
+
       return {
         props: {
           post: newPost,
+          comments: newComments,
         },
       };
     } else {
