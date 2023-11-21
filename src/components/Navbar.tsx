@@ -16,7 +16,7 @@ export default function Navbar() {
       </div>
       <div className="navbar-end">
         {session ? (
-          <div className="flex">
+          <div className="flex pr-1">
             <div className="h-8 mr-1">
               <img
                 className="w-full h-full rounded-full"

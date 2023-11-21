@@ -30,7 +30,7 @@ export default async function handler(
         },
       });
       res.json({
-        message: `comment with ${req.query.id} has been deleted successfully`,
+        message: `comment with id ${req.query.id} has been deleted successfully`,
       });
     }
   }

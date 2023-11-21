@@ -10,17 +10,15 @@ import axios from "axios";
 
 import prisma from "@/lib/db";
 
-import { getUserNameByUserId } from "@/utils/prisma";
+import { getUserNameByUserId, getUserImageByUserId } from "@/utils/prisma";
 
 export default function PostPage({ post, comments }: any) {
-  console.log(comments);
-
   const router = useRouter();
   const { data: session, status } = useSession();
 
   const [commentInput, setCommentInput] = useState<string>("");
 
-  const handleClick1 = (e: any) => {
+  const handleClick1 = () => {
     if (session?.user.sub !== post?.userId) {
       alert("This is not your post!");
     } else {
@@ -28,7 +26,7 @@ export default function PostPage({ post, comments }: any) {
     }
   };
 
-  const handleClick2 = (e: any) => {
+  const handleClick2 = () => {
     if (session?.user.sub !== post?.userId) {
       alert("This is not your post!");
     } else {
@@ -63,6 +61,23 @@ export default function PostPage({ post, comments }: any) {
       });
   };
 
+  const deleteComment = (comment: any) => {
+    if (status === "unauthenticated") {
+      alert("please log in!");
+    } else if (session?.user.sub !== comment.userId) {
+      alert("this is not your comment!");
+    } else {
+      axios
+        .delete(`/api/comments/${comment.id}`)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+
   if (post === null) {
     return <h1>{"Post doesn't exist!"}</h1>;
   } else if (post) {
@@ -70,16 +85,16 @@ export default function PostPage({ post, comments }: any) {
       <div>
         <p className="mt-10 text-5xl font-bold mb-10">{post.title}</p>
         <p className="text-slate-600 font-bold">{`${post.userName} · ${post.date}`}</p>
-        <p className="text-xl leading-10">{post.content}</p>
+        <p className="mb-14 text-xl leading-10">{post.content}</p>
         {status === "authenticated" ? (
           <>
             <button
-              className="mt-5 mr-3 btn btn-neutral text-neutral-content text-xl"
+              className="mr-3 btn btn-neutral text-neutral-content text-xl"
               onClick={handleClick1}>
               편집
             </button>
             <button
-              className="mt-5 btn btn-neutral text-neutral-content text-xl"
+              className="btn btn-neutral text-neutral-content text-xl"
               onClick={handleClick2}>
               삭제
             </button>
@@ -89,32 +104,58 @@ export default function PostPage({ post, comments }: any) {
         )}
         {/* COMMENTS */}
         {status === "authenticated" ? (
-          <div>
-            <div className="mt-5 pt-5 border-t-2">
-              <textarea
-                placeholder="댓글 작성"
-                className="textarea border-2 border-neutral w-full text-lg"
-                onChange={handleCommentChange}
-              />
-              <button
-                className="btn btn-neutral text-neutral-content text-xl"
-                onClick={handleCommentClick}>
-                작성
-              </button>
-            </div>
-            {comments.map((v: any, i: any) => (
-              <div>
-                <p key={i}>
-                  {v.content}
-                  {v.userName}
-                  {v.date}
-                </p>
-              </div>
-            ))}
+          <div className="my-5 pt-5 border-t-2">
+            <textarea
+              placeholder="댓글 작성"
+              className="textarea border-2 border-neutral w-full text-lg"
+              onChange={handleCommentChange}
+            />
+            <button
+              className="btn btn-neutral text-neutral-content text-xl"
+              onClick={handleCommentClick}>
+              작성
+            </button>
           </div>
         ) : (
           ""
         )}
+        {comments.map((v: any, i: any) => (
+          <div key={i} className="p-2 border-t-2">
+            <div className="flex justify-between">
+              <div>
+                <div className="flex">
+                  <div className="h-10">
+                    <img src={v.userImage} className="h-full" />
+                  </div>
+                  <p className="pl-1 font-bold">{v.userName}</p>
+                </div>
+                <p className="text-lg">{v.content}</p>
+                <p className="text-sm text-slate-600 font-bold">{v.date}</p>
+              </div>
+              <div>
+                <button
+                  className="btn btn-sm btn-square btn-error"
+                  onClick={() => {
+                    deleteComment(v);
+                  }}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     );
   } else {
@@ -149,11 +190,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       const newComments = await Promise.all(
         comments.map(async (comment) => {
           const userName = await getUserNameByUserId(comment.userId);
+          const userImage = await getUserImageByUserId(comment.userId);
 
           return {
             ...comment,
             date: comment.date.toISOString(),
             userName: userName,
+            userImage: userImage,
           };
         })
       );
