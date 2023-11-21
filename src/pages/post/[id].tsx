@@ -13,8 +13,6 @@ import prisma from "@/lib/db";
 import { getUserNameByUserId } from "@/utils/prisma";
 
 export default function PostPage({ post }: any) {
-  console.log(post);
-
   const router = useRouter();
   const { data: session, status } = useSession();
 
@@ -89,17 +87,14 @@ export default function PostPage({ post }: any) {
         )}
         {/* COMMENTS */}
         {status === "authenticated" ? (
-          <div className="mt-5 relative border-2 input border-neutral">
-            <div className="w-96">
-              <input
-                type="text"
-                placeholder="댓글 작성"
-                className="blocks w-full my-auto"
-                onChange={handleCommentChange}
-              />
-            </div>
+          <div className="mt-5 pt-5 border-t-2">
+            <textarea
+              placeholder="댓글 작성"
+              className="textarea border-2 border-neutral w-full text-lg"
+              onChange={handleCommentChange}
+            />
             <button
-              className="absolute top-0 right-0 btn btn-md btn-neutral text-neutral-content text-lgs"
+              className="btn btn-neutral text-neutral-content text-xl"
               onClick={handleCommentClick}>
               작성
             </button>
