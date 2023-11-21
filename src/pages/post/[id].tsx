@@ -2,57 +2,23 @@ import { useState, useEffect } from "react";
 
 import { useRouter } from "next/router";
 
+import { GetServerSideProps } from "next";
+
 import { useSession } from "next-auth/react";
 
 import axios from "axios";
 
-export default function PostPage() {
+import prisma from "@/lib/db";
+
+import { getUserNameByUserId } from "@/utils/prisma";
+
+export default function PostPage({ post }: any) {
+  console.log(post);
+
   const router = useRouter();
   const { data: session, status } = useSession();
 
-  type PostType = {
-    content: string;
-    date: string;
-    id: number;
-    title: string;
-    userId: string;
-  };
-
-  type UserDataType = {
-    name: string;
-    image: string;
-  };
-
-  const [post, setPost] = useState<PostType>();
-  const [userData, setUserData] = useState<UserDataType>();
   const [commentInput, setCommentInput] = useState<string>("");
-
-  useEffect(() => {
-    if (router.query.id) {
-      axios
-        .get(`/api/posts/${router.query.id}`)
-        .then((res) => {
-          setPost(res.data.post);
-          console.log(res.data.post);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  }, [router.query.id]);
-
-  useEffect(() => {
-    if (post) {
-      axios
-        .get(`/api/users/${post.userId}`)
-        .then((res) => {
-          setUserData(res.data.userData);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  }, [post]);
 
   const handleClick1 = (e: any) => {
     if (session?.user.sub !== post?.userId) {
@@ -99,12 +65,11 @@ export default function PostPage() {
 
   if (post === null) {
     return <h1>{"Post doesn't exist!"}</h1>;
-  } else if (post && userData) {
-    const date = new Date(post.date).toISOString().substring(0, 10);
+  } else if (post) {
     return (
       <div>
         <p className="mt-10 text-5xl font-bold mb-10">{post.title}</p>
-        <p className="text-slate-600 font-bold">{`${userData.name} · ${date}`}</p>
+        <p className="text-slate-600 font-bold">{`${post.userName} · ${post.date}`}</p>
         <p className="text-xl leading-10">{post.content}</p>
         {status === "authenticated" ? (
           <>
@@ -148,3 +113,42 @@ export default function PostPage() {
     return <h1>Loading..</h1>;
   }
 }
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { query } = context;
+
+  if (query.id) {
+    const post = await prisma.post.findUnique({
+      where: {
+        id: +query.id,
+      },
+    });
+    if (post) {
+      const userName = await getUserNameByUserId(post.userId);
+
+      const newPost = {
+        ...post,
+        date: post.date.toISOString(),
+        userName: userName,
+      };
+
+      return {
+        props: {
+          post: newPost,
+        },
+      };
+    } else {
+      return {
+        props: {
+          error: "no post data",
+        },
+      };
+    }
+  } else {
+    return {
+      props: {
+        error: "no query.id",
+      },
+    };
+  }
+};
