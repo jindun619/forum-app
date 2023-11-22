@@ -17,7 +17,7 @@ export default function Navbar() {
       <div className="navbar-end">
         {session ? (
           <div className="flex pr-1">
-            <div className="h-8 mr-1">
+            <div className="w-8 h-8 mr-1">
               <img
                 className="w-full h-full rounded-full"
                 src={session.user.image}
