@@ -22,7 +22,7 @@ export default function PostPage({ post, comments }: any) {
 
   const [commentInput, setCommentInput] = useState<string>("");
 
-  //hydration오류를 피하기 위한.. 더러운 코드
+  //hydration오류를 피하기 위한.. 더러운 코드ㅠ
   const [postDateTime, setPostDateTime] = useState<string>("");
   const [commentDateTime, setCommentDateTime] = useState<string[]>([]);
 
