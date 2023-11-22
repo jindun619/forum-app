@@ -9,10 +9,10 @@ const prisma = new PrismaClient();
 export const authOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
-    GithubProvider({
-      clientId: process.env.GITHUB_DEV_ID || "",
-      clientSecret: process.env.GITHUB_DEV_SECRET || "",
-    }),
+    // GithubProvider({
+    //   clientId: process.env.GITHUB_DEV_ID || "",
+    //   clientSecret: process.env.GITHUB_DEV_SECRET || "",
+    // }),
     NaverProvider({
       clientId: process.env.NAVER_DEV_ID || "",
       clientSecret: process.env.NAVER_DEV_SECRET || "",

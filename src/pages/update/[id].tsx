@@ -6,7 +6,7 @@ import { useSession } from "next-auth/react";
 
 import axios from "axios";
 
-import Login from "@/components/Login";
+import { signIn } from "next-auth/react";
 
 export default function UpdatePage() {
   const router = useRouter();
@@ -58,6 +58,15 @@ export default function UpdatePage() {
   };
 
   const handleClick = () => {
+    if (inputForm.title.replace(/\s/g, "").length === 0) {
+      alert("제목을 입력해 주세요.");
+      return false;
+    }
+    if (inputForm.content.replace(/\s/g, "").length === 0) {
+      alert("내용을 입력해 주세요.");
+      return false;
+    }
+
     axios
       .patch(`/api/posts/${post?.id}`, {
         title: inputForm.title,
@@ -65,6 +74,7 @@ export default function UpdatePage() {
       })
       .then((res) => {
         console.log(res);
+        router.back();
       })
       .catch((err) => {
         console.log(err);
@@ -74,19 +84,10 @@ export default function UpdatePage() {
   if (!post) {
     <h1>Loading..</h1>;
   } else if (status === "unauthenticated") {
-    return (
-      <>
-        <h1>Please Log In!</h1>
-        <Login />
-      </>
-    );
+    signIn("naver");
   } else if (post.userId !== session?.user.sub) {
-    return (
-      <>
-        <h1>This is not your post!</h1>
-        <Login />
-      </>
-    );
+    alert("당신의 게시글이 아닙니다.");
+    router.push("/");
   } else {
     return (
       <div className="mt-10 max-w-md mx-auto">

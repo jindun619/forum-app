@@ -1,7 +1,10 @@
 import Link from "next/link";
 
+import { getDateByString } from "@/utils/utils";
+
 export default function PostCard({ data, userName }: any) {
-  const date = new Date(data.date).toISOString().substring(0, 10);
+  const { date } = getDateByString(data.date);
+
   return (
     <div className="p-5 border-t border-neutral-content hover:bg-base-200">
       <Link href={`/post/${data.id}`}>

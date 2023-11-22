@@ -4,7 +4,11 @@ import { useSession, signIn } from "next-auth/react";
 
 import axios from "axios";
 
+import { useRouter } from "next/router";
+
 export default function WritePage() {
+  const router = useRouter()
+
   const { data: session, status } = useSession();
 
   const [inputForm, setInputForm] = useState({
@@ -20,20 +24,27 @@ export default function WritePage() {
   };
 
   const handleClick = () => {
-    if (session) {
-      axios
-        .post("/api/posts", {
-          title: inputForm.title,
-          content: inputForm.content,
-          userId: session?.user?.sub,
-        })
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    if (inputForm.title.replace(/\s/g, "").length === 0) {
+      alert("제목을 입력해 주세요.");
+      return false;
     }
+    if (inputForm.content.replace(/\s/g, "").length === 0) {
+      alert("내용을 입력해 주세요.");
+      return false;
+    }
+    axios
+      .post("/api/posts", {
+        title: inputForm.title,
+        content: inputForm.content,
+        userId: session?.user?.sub,
+      })
+      .then((res) => {
+        console.log(res);
+        router.push("/")
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   if (status === "unauthenticated") {

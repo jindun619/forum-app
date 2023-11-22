@@ -18,6 +18,7 @@ export default async function handler(
     }
   } else if (req.method === "PATCH") {
     if (req.query.id) {
+      const curDate = new Date()
       await client.post.update({
         where: {
           id: +req.query.id,
@@ -25,6 +26,7 @@ export default async function handler(
         data: {
           title: req.body.title,
           content: req.body.content,
+          date: curDate
         },
       });
       res.json({
