@@ -9,7 +9,7 @@ export default function Layout(props: { children: React.ReactNode }) {
   return (
     <div>
       <Navbar />
-      <div className="max-w-2xl mx-auto">{props.children}</div>
+      <div className="max-w-2xl mx-auto px-1 md:px-0">{props.children}</div>
     </div>
   );
 }
