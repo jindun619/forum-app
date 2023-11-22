@@ -7,7 +7,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 
 export default function WritePage() {
-  const router = useRouter()
+  const router = useRouter();
 
   const { data: session, status } = useSession();
 
@@ -40,7 +40,7 @@ export default function WritePage() {
       })
       .then((res) => {
         console.log(res);
-        router.push("/")
+        router.push("/");
       })
       .catch((err) => {
         console.log(err);

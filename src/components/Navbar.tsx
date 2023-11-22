@@ -11,7 +11,7 @@ export default function Navbar() {
     <div className="navbar bg-neutral text-neutral-content">
       <div className="navbar-start">
         <Link className="btn btn-ghost text-xl" href="/">
-          조성민 연구소
+          조성민 연구 포럼
         </Link>
       </div>
       <div className="navbar-end">

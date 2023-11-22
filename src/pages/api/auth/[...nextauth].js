@@ -14,8 +14,10 @@ export const authOptions = {
     //   clientSecret: process.env.GITHUB_DEV_SECRET || "",
     // }),
     NaverProvider({
-      clientId: process.env.NAVER_DEV_ID || "",
-      clientSecret: process.env.NAVER_DEV_SECRET || "",
+      // clientId: process.env.NAVER_DEV_ID || "",
+      // clientSecret: process.env.NAVER_DEV_SECRET || "",
+      clientId: process.env.NAVER_ID || "",
+      clientSecret: process.env.NAVER_SECRET || "",
     }),
   ],
   session: {

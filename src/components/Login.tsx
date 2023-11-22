@@ -5,7 +5,7 @@ export default function Login() {
   if (session) {
     return (
       <>
-        <button className="btn btn-ghost text-xl" onClick={() => signOut()}>
+        <button className="btn btn-ghost text-xls" onClick={() => signOut()}>
           로그아웃
         </button>
       </>
@@ -13,7 +13,9 @@ export default function Login() {
   }
   return (
     <>
-      <button className="btn btn-ghost text-xl" onClick={() => signIn("naver")}>
+      <button
+        className="btn btn-ghost text-xls"
+        onClick={() => signIn("naver")}>
         로그인
       </button>
     </>
