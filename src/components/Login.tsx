@@ -15,7 +15,7 @@ export default function Login() {
     <>
       <button
         className="btn btn-ghost text-xls"
-        onClick={() => signIn("naver")}>
+        onClick={() => signIn("kakao")}>
         로그인
       </button>
     </>

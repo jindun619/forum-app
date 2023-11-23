@@ -84,7 +84,7 @@ export default function UpdatePage() {
   if (!post) {
     <h1>Loading..</h1>;
   } else if (status === "unauthenticated") {
-    signIn("naver");
+    signIn("kakao");
   } else if (post.userId !== session?.user.sub) {
     alert("당신의 게시글이 아닙니다.");
     router.push("/");

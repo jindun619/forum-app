@@ -14,11 +14,15 @@ export const authOptions = {
     //   clientId: process.env.GITHUB_DEV_ID || "",
     //   clientSecret: process.env.GITHUB_DEV_SECRET || "",
     // }),
-    NaverProvider({
-      // clientId: process.env.NAVER_DEV_ID || "",
-      // clientSecret: process.env.NAVER_DEV_SECRET || "",
-      clientId: process.env.NAVER_ID || "",
-      clientSecret: process.env.NAVER_SECRET || "",
+    // NaverProvider({
+    //   // clientId: process.env.NAVER_DEV_ID || "",
+    //   // clientSecret: process.env.NAVER_DEV_SECRET || "",
+    //   clientId: process.env.NAVER_ID || "",
+    //   clientSecret: process.env.NAVER_SECRET || "",
+    // }),
+    KakaoProvider({
+      clientId: process.env.KAKAO_CLIENT_ID,
+      clientSecret: process.env.KAKAO_CLIENT_SECRET,
     }),
   ],
   session: {

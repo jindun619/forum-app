@@ -48,7 +48,7 @@ export default function WritePage() {
   };
 
   if (status === "unauthenticated") {
-    signIn("naver");
+    signIn("kakao");
     return (
       <>
         <h1>please log in</h1>

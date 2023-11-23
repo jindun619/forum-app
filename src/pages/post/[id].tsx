@@ -62,7 +62,7 @@ export default function PostPage({ post, comments }: any) {
   const handleCommentClick = () => {
     if (status === "unauthenticated") {
       alert("로그인이 필요합니다.");
-      signIn("naver");
+      signIn("kakao");
     }
 
     if (commentInput.replace(/\s/g, "").length === 0) {
