@@ -8,16 +8,19 @@ import { useRouter } from "next/router";
 
 export default function WritePage() {
   const router = useRouter();
-  router.prefetch("/");
-
+  
   const { data: session, status } = useSession();
-
+  
   const [inputForm, setInputForm] = useState({
     title: "",
     content: "",
   });
-
+  
   const [loading, setLoading] = useState<boolean>(false);
+  
+  useEffect(() => {
+    router.prefetch("/");
+  }, [])
 
   const handleChange = (e: any) => {
     setInputForm({
