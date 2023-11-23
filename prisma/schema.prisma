@@ -22,7 +22,7 @@ model Comment {
   id      Int      @id @default(autoincrement())
   content String
   date    DateTime @default(now())
-  post    Post     @relation(fields: [postId], references: [id])
+  post    Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId  Int
   user    User     @relation(fields: [userId], references: [id])
   userId  String

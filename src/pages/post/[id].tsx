@@ -31,7 +31,7 @@ export default function PostPage({ post, comments }: any) {
   const [commentDateTime, setCommentDateTime] = useState<string[]>([]);
 
   //Comment를 입력했을 때 새로고침 되기 전까지 modal loading창을 보여줌
-  const [showLoading, setShowLoading] = useState<boolean>(false);
+  const [commentLoading, setCommentLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const { date, time } = getDateByString(post.date);
@@ -44,12 +44,12 @@ export default function PostPage({ post, comments }: any) {
   }, []);
 
   useEffect(() => {
-    if (showLoading) {
+    if (commentLoading) {
       window.document.getElementById("commentLoading")!.style.opacity = "1";
     } else {
       window.document.getElementById("commentLoading")!.style.opacity = "0";
     }
-  }, [showLoading]);
+  }, [commentLoading]);
 
   const handlePostDelete = () => {
     const userConfirm = confirm("게시글을 삭제하시겠습니까?");
@@ -86,18 +86,21 @@ export default function PostPage({ post, comments }: any) {
       userId: session?.user.sub,
       postId: router.query.id,
     };
-    setShowLoading(true);
-    axios
-      .post("/api/comments", body)
-      .then((res) => {
-        setShowLoading(false);
-        console.log(res);
-        router.replace(router.asPath);
-        setCommentInput("");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+
+    if (!commentLoading) {
+      setCommentLoading(true);
+      axios
+        .post("/api/comments", body)
+        .then((res) => {
+          console.log(res);
+          setCommentLoading(false)
+          router.replace(router.asPath);
+          setCommentInput("");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
   const deleteComment = (comment: any) => {
