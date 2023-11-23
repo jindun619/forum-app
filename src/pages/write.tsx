@@ -16,6 +16,8 @@ export default function WritePage() {
     content: "",
   });
 
+  const [loading, setLoading] = useState<boolean>(false)
+
   const handleChange = (e: any) => {
     setInputForm({
       ...inputForm,
@@ -32,19 +34,22 @@ export default function WritePage() {
       alert("내용을 입력해 주세요.");
       return false;
     }
-    axios
-      .post("/api/posts", {
-        title: inputForm.title,
-        content: inputForm.content,
-        userId: session?.user?.sub,
-      })
-      .then((res) => {
-        console.log(res);
-        router.push("/");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (!loading) {
+      setLoading(true)
+      axios
+        .post("/api/posts", {
+          title: inputForm.title,
+          content: inputForm.content,
+          userId: session?.user?.sub,
+        })
+        .then((res) => {
+          console.log(res);
+          router.push("/");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
   if (status === "unauthenticated") {

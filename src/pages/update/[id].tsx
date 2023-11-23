@@ -27,6 +27,8 @@ export default function UpdatePage() {
     content: "",
   });
 
+  const [loading, setLoading] = useState<boolean>(false);
+
   useEffect(() => {
     if (router.query.id) {
       axios
@@ -67,18 +69,21 @@ export default function UpdatePage() {
       return false;
     }
 
-    axios
-      .patch(`/api/posts/${post?.id}`, {
-        title: inputForm.title,
-        content: inputForm.content,
-      })
-      .then((res) => {
-        console.log(res);
-        router.back();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (!loading) {
+      setLoading(true);
+      axios
+        .patch(`/api/posts/${post?.id}`, {
+          title: inputForm.title,
+          content: inputForm.content,
+        })
+        .then((res) => {
+          console.log(res);
+          router.back();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
   if (!post) {

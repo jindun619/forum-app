@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 
 import { useRouter } from "next/router";
 
+import Link from "next/link";
+
 import { GetServerSideProps } from "next";
 
 import { useSession } from "next-auth/react";
@@ -48,10 +50,6 @@ export default function PostPage({ post, comments }: any) {
       window.document.getElementById("commentLoading")!.style.opacity = "0";
     }
   }, [showLoading]);
-
-  const handlePostUpdate = () => {
-    router.push(`/update/${router.query.id}`);
-  };
 
   const handlePostDelete = () => {
     const userConfirm = confirm("게시글을 삭제하시겠습니까?");
@@ -132,11 +130,11 @@ export default function PostPage({ post, comments }: any) {
         <p className="mb-14 text-xl leading-10">{post.content}</p>
         {post.userId === session?.user.sub ? (
           <>
-            <button
-              className="mr-3 btn btn-warning text-warning-content text-xl"
-              onClick={handlePostUpdate}>
-              편집
-            </button>
+            <Link href={`/update/${router.query.id}`}>
+              <button className="mr-3 btn btn-warning text-warning-content text-xl">
+                편집
+              </button>
+            </Link>
             <button
               className="btn btn-error text-error-content text-xl"
               onClick={handlePostDelete}>
