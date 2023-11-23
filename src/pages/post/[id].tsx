@@ -16,6 +16,8 @@ import { getUserNameByUserId, getUserImageByUserId } from "@/utils/prisma";
 
 import { getDateByString } from "@/utils/utils";
 
+import LoadingModal from "@/components/LoadingModal";
+
 export default function PostPage({ post, comments }: any) {
   const router = useRouter();
   const { data: session, status } = useSession();
@@ -26,6 +28,9 @@ export default function PostPage({ post, comments }: any) {
   const [postDateTime, setPostDateTime] = useState<string>("");
   const [commentDateTime, setCommentDateTime] = useState<string[]>([]);
 
+  //Comment를 입력했을 때 새로고침 되기 전까지 modal loading창을 보여줌
+  const [showLoading, setShowLoading] = useState<boolean>(false);
+
   useEffect(() => {
     const { date, time } = getDateByString(post.date);
     setPostDateTime(`${date} ${time}`);
@@ -35,6 +40,14 @@ export default function PostPage({ post, comments }: any) {
       setCommentDateTime((prev) => [...prev, `${date} ${time}`]);
     });
   }, []);
+
+  useEffect(() => {
+    if (showLoading) {
+      window.document.getElementById("commentLoading")!.style.opacity = "1";
+    } else {
+      window.document.getElementById("commentLoading")!.style.opacity = "0";
+    }
+  }, [showLoading]);
 
   const handlePostUpdate = () => {
     router.push(`/update/${router.query.id}`);
@@ -75,9 +88,11 @@ export default function PostPage({ post, comments }: any) {
       userId: session?.user.sub,
       postId: router.query.id,
     };
+    setShowLoading(true);
     axios
       .post("/api/comments", body)
       .then((res) => {
+        setShowLoading(false);
         console.log(res);
         router.replace(router.asPath);
         setCommentInput("");
@@ -193,6 +208,7 @@ export default function PostPage({ post, comments }: any) {
             </div>
           );
         })}
+        <LoadingModal idName="commentLoading" />
       </div>
     );
   } else {
