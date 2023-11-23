@@ -129,7 +129,7 @@ export default function PostPage({ post, comments }: any) {
         <p className="mt-10 text-5xl font-bold mb-10">{post.title}</p>
         <div className="flex">
           <div className="h-10">
-            <img src={session?.user.image} className="h-full" />
+            <img src={post.userImage} className="h-full" />
           </div>
           <p className="pl-1 text-slate-600 font-bold">{`${post.userName} · ${postDateTime}`}</p>
         </div>
@@ -237,11 +237,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     if (post) {
       const userName = await getUserNameByUserId(post.userId);
+      const userImage = await getUserImageByUserId(post.userId)
 
       const newPost = {
         ...post,
         date: post.date.toISOString(),
         userName: userName,
+        userImage: userImage
       };
 
       const newComments = await Promise.all(
