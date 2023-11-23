@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 
 export default function WritePage() {
   const router = useRouter();
+  router.prefetch("/");
 
   const { data: session, status } = useSession();
 
@@ -16,7 +17,7 @@ export default function WritePage() {
     content: "",
   });
 
-  const [loading, setLoading] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleChange = (e: any) => {
     setInputForm({
@@ -35,7 +36,7 @@ export default function WritePage() {
       return false;
     }
     if (!loading) {
-      setLoading(true)
+      setLoading(true);
       axios
         .post("/api/posts", {
           title: inputForm.title,

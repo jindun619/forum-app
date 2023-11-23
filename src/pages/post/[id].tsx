@@ -34,6 +34,9 @@ export default function PostPage({ post, comments }: any) {
   const [commentLoading, setCommentLoading] = useState<boolean>(false);
 
   useEffect(() => {
+    //삭제 후 홈으로 가는 속도 향상
+    router.prefetch("/");
+
     const { date, time } = getDateByString(post.date);
     setPostDateTime(`${date} ${time}`);
 
@@ -93,7 +96,7 @@ export default function PostPage({ post, comments }: any) {
         .post("/api/comments", body)
         .then((res) => {
           console.log(res);
-          setCommentLoading(false)
+          setCommentLoading(false);
           router.replace(router.asPath);
           setCommentInput("");
         })
