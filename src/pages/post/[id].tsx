@@ -20,9 +20,11 @@ import { getDateByString } from "@/utils/utils";
 
 import LoadingModal from "@/components/LoadingModal";
 
-export default function PostPage({ post, comments }: any) {
+export default function PostPage({ post /*, comments*/ }: any) {
   const router = useRouter();
   const { data: session, status } = useSession();
+
+  const [comments, setComments] = useState<any[]>([]);
 
   const [commentInput, setCommentInput] = useState<string>("");
 
@@ -39,12 +41,43 @@ export default function PostPage({ post, comments }: any) {
 
     const { date, time } = getDateByString(post.date);
     setPostDateTime(`${date} ${time}`);
+  }, []);
 
-    comments.map((v: any) => {
+  useEffect(() => {
+    if (router.query.id) {
+      axios
+        .get(`/api/comments/${router.query.id}`)
+        .then((res) => {
+          console.log(res);
+          res.data.map((v: any, i: any) => {
+            axios
+              .get(`/api/users/${v.userId}`)
+              .then((res) => {
+                const newComment = {
+                  ...v,
+                  userName: res.data.userData.name,
+                  userImage: res.data.userData.image,
+                };
+                setComments((prev) => [...prev, newComment]);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [router.query.id]);
+
+  useEffect(() => {
+    console.log(comments);
+    comments.map(async (v: any, i: any) => {
       const { date, time } = getDateByString(v.date);
       setCommentDateTime((prev) => [...prev, `${date} ${time}`]);
     });
-  }, []);
+  }, [comments]);
 
   useEffect(() => {
     if (commentLoading) {
@@ -166,8 +199,7 @@ export default function PostPage({ post, comments }: any) {
             작성
           </button>
         </div>
-        {comments.map((v: any, i: any) => {
-          // const { date, time } = getDateByString(post.date);
+        {comments?.map((v: any, i: any) => {
           return (
             <div key={i} className="p-2 border-t-2">
               <div className="flex justify-between">
@@ -236,20 +268,26 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     });
 
     if (post) {
-      const userName = await getUserNameByUserId(post.userId);
-      const userImage = await getUserImageByUserId(post.userId)
+      // const userName = await getUserNameByUserId(post.userId);
+      // const userImage = await getUserImageByUserId(post.userId);
+      const userName = "userName";
+      const userImage =
+        "https://mblogthumb-phinf.pstatic.net/MjAyMTA4MTFfMzkg/MDAxNjI4NjY1NjgwNTUw.K2a44KxCgskoaKSw8cH5ySnsEuadVA8wphcrBOrDwBQg.R4GfkzCRdTa1jdicp9p4Ph8A4THJ8tX1mZO-uTqzgygg.JPEG.bbekimha/%EB%A3%A8%ED%94%BC.jpg?type=w800";
 
       const newPost = {
         ...post,
         date: post.date.toISOString(),
         userName: userName,
-        userImage: userImage
+        userImage: userImage,
       };
 
-      const newComments = await Promise.all(
+      /*const newComments = await Promise.all(
         comments.map(async (comment) => {
-          const userName = await getUserNameByUserId(comment.userId);
-          const userImage = await getUserImageByUserId(comment.userId);
+          // const userName = await getUserNameByUserId(comment.userId);
+          // const userImage = await getUserImageByUserId(comment.userId);
+          const userName = "userName";
+          const userImage =
+            "https://mblogthumb-phinf.pstatic.net/MjAyMTA4MTFfMzkg/MDAxNjI4NjY1NjgwNTUw.K2a44KxCgskoaKSw8cH5ySnsEuadVA8wphcrBOrDwBQg.R4GfkzCRdTa1jdicp9p4Ph8A4THJ8tX1mZO-uTqzgygg.JPEG.bbekimha/%EB%A3%A8%ED%94%BC.jpg?type=w800";
 
           return {
             ...comment,
@@ -258,12 +296,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
             userImage: userImage,
           };
         })
-      );
+      );*/
 
       return {
         props: {
           post: newPost,
-          comments: newComments,
+          // comments: newComments,
         },
       };
     } else {

@@ -1,15 +1,23 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/lib/db";
 
-const client = new PrismaClient();
-//
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.method === "PATCH") {
+  if (req.method === "GET") {
+    //id는 postId를 뜻함
     if (req.query.id) {
-      await client.comment.update({
+      const comments = await prisma.comment.findMany({
+        where: {
+          postId: +req.query.id,
+        },
+      });
+      res.json(comments)
+    }
+  } else if (req.method === "PATCH") {
+    if (req.query.id) {
+      await prisma.comment.update({
         where: {
           id: +req.query.id,
         },
@@ -24,7 +32,7 @@ export default async function handler(
     }
   } else if (req.method === "DELETE") {
     if (req.query.id) {
-      await client.comment.delete({
+      await prisma.comment.delete({
         where: {
           id: +req.query.id,
         },
