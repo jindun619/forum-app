@@ -65,22 +65,24 @@ export default function PostPage({ post /*, comments*/ }: any) {
       axios
         .get(`/api/comments/${router.query.id}`)
         .then((res) => {
-          console.log(res);
-          res.data.map((v: any) => {
-            axios
-              .get(`/api/users/${v.userId}`)
-              .then((res) => {
-                const newComment = {
-                  ...v,
-                  userName: res.data.userData.name,
-                  userImage: res.data.userData.image,
-                };
-                setComments((prev) => [...prev, newComment]);
-              })
-              .catch((err) => {
-                console.log(err);
-              });
-          });
+          //async/await과 for()을 사용한 이유는 array.map()은 비동기 처리에 대해 기다려주지 않기 때문.
+          (async () => {
+            for (const element of res.data) {
+              await axios
+                .get(`/api/users/${element.userId}`)
+                .then((res) => {
+                  const newComment = {
+                    ...element,
+                    userName: res.data.userData.name,
+                    userImage: res.data.userData.image,
+                  };
+                  setComments((prev) => [...prev, newComment]);
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+            }
+          })();
         })
         .catch((err) => {
           console.log(err);
@@ -89,8 +91,7 @@ export default function PostPage({ post /*, comments*/ }: any) {
   }, [router.query.id]);
 
   useEffect(() => {
-    console.log(comments);
-    comments.map(async (v: any, i: any) => {
+    comments.map((v: any) => {
       const { date, time } = getDateByString(v.date);
       setCommentDateTime((prev) => [...prev, `${date} ${time}`]);
     });
