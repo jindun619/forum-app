@@ -14,8 +14,6 @@ import prisma from "@/lib/db";
 
 import { signIn } from "next-auth/react";
 
-import { getUserNameByUserId, getUserImageByUserId } from "@/utils/prisma";
-
 import { getDateByString } from "@/utils/utils";
 
 import LoadingModal from "@/components/LoadingModal";
@@ -32,6 +30,11 @@ export default function PostPage({ post /*, comments*/ }: any) {
   const [postDateTime, setPostDateTime] = useState<string>("");
   const [commentDateTime, setCommentDateTime] = useState<string[]>([]);
 
+  const [userData, setUserData] = useState({
+    name: "",
+    image: "",
+  });
+
   //Comment를 입력했을 때 새로고침 되기 전까지 modal loading창을 보여줌
   const [commentLoading, setCommentLoading] = useState<boolean>(false);
 
@@ -41,6 +44,20 @@ export default function PostPage({ post /*, comments*/ }: any) {
 
     const { date, time } = getDateByString(post.date);
     setPostDateTime(`${date} ${time}`);
+
+    (async () => {
+      axios
+        .get(`/api/users/${post.userId}`)
+        .then((res) => {
+          setUserData({
+            name: res.data.userData.name,
+            image: res.data.userData.image,
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    })();
   }, []);
 
   useEffect(() => {
@@ -49,7 +66,7 @@ export default function PostPage({ post /*, comments*/ }: any) {
         .get(`/api/comments/${router.query.id}`)
         .then((res) => {
           console.log(res);
-          res.data.map((v: any, i: any) => {
+          res.data.map((v: any) => {
             axios
               .get(`/api/users/${v.userId}`)
               .then((res) => {
@@ -162,9 +179,9 @@ export default function PostPage({ post /*, comments*/ }: any) {
         <p className="mt-10 text-5xl font-bold mb-10">{post.title}</p>
         <div className="flex">
           <div className="h-10">
-            <img src={post.userImage} className="h-full" />
+            <img src={userData.image} className="h-full" />
           </div>
-          <p className="pl-1 text-slate-600 font-bold">{`${post.userName} · ${postDateTime}`}</p>
+          <p className="pl-1 text-slate-600 font-bold">{`${userData.name} · ${postDateTime}`}</p>
         </div>
         <p className="mb-14 text-xl leading-10">{post.content}</p>
         {post.userId === session?.user.sub ? (
@@ -261,47 +278,16 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         id: +query.id,
       },
     });
-    const comments = await prisma.comment.findMany({
-      where: {
-        postId: +query.id,
-      },
-    });
 
     if (post) {
-      // const userName = await getUserNameByUserId(post.userId);
-      // const userImage = await getUserImageByUserId(post.userId);
-      const userName = "userName";
-      const userImage =
-        "https://mblogthumb-phinf.pstatic.net/MjAyMTA4MTFfMzkg/MDAxNjI4NjY1NjgwNTUw.K2a44KxCgskoaKSw8cH5ySnsEuadVA8wphcrBOrDwBQg.R4GfkzCRdTa1jdicp9p4Ph8A4THJ8tX1mZO-uTqzgygg.JPEG.bbekimha/%EB%A3%A8%ED%94%BC.jpg?type=w800";
-
       const newPost = {
         ...post,
         date: post.date.toISOString(),
-        userName: userName,
-        userImage: userImage,
       };
-
-      /*const newComments = await Promise.all(
-        comments.map(async (comment) => {
-          // const userName = await getUserNameByUserId(comment.userId);
-          // const userImage = await getUserImageByUserId(comment.userId);
-          const userName = "userName";
-          const userImage =
-            "https://mblogthumb-phinf.pstatic.net/MjAyMTA4MTFfMzkg/MDAxNjI4NjY1NjgwNTUw.K2a44KxCgskoaKSw8cH5ySnsEuadVA8wphcrBOrDwBQg.R4GfkzCRdTa1jdicp9p4Ph8A4THJ8tX1mZO-uTqzgygg.JPEG.bbekimha/%EB%A3%A8%ED%94%BC.jpg?type=w800";
-
-          return {
-            ...comment,
-            date: comment.date.toISOString(),
-            userName: userName,
-            userImage: userImage,
-          };
-        })
-      );*/
 
       return {
         props: {
           post: newPost,
-          // comments: newComments,
         },
       };
     } else {
