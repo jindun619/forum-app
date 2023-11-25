@@ -8,11 +8,30 @@ import axios from "axios";
 
 import prisma from "@/lib/db";
 
-import { getUserNameByUserId } from "@/utils/prisma";
-
 import PostCard from "@/components/PostCard";
 
 export default function IndexPage({ posts }: any) {
+  const [userNames, setUserNames] = useState<string[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      for (const post of posts) {
+        await axios
+          .get(`/api/users/${post.userId}`)
+          .then((res) => {
+            setUserNames((prev) => [...prev, res.data.userData.name]);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+    console.log(userNames);
+  }, [userNames]);
+
   return (
     <>
       <div className="mt-10">
@@ -26,7 +45,11 @@ export default function IndexPage({ posts }: any) {
         </p>
         {posts
           ? posts.map((v: any, i: any) => (
-              <PostCard key={i} data={v} userName={v.userName} />
+              <PostCard
+                key={i}
+                data={v}
+                userName={userNames[i] || "userName"}
+              />
             ))
           : ""}
       </div>
@@ -37,16 +60,20 @@ export default function IndexPage({ posts }: any) {
 export const getServerSideProps: GetServerSideProps = async () => {
   const posts = await prisma.post.findMany();
 
-  const newPosts = await Promise.all(
-    //GPT가 알려줬는데 무슨 원리인지는 모르겠음..
-    posts.map(async (post) => {
-      return {
-        ...post,
-        date: post.date.toISOString(),
-        userName: await getUserNameByUserId(post.userId),
-      };
-    })
-  );
+  // const newPosts = await Promise.all(
+  //   posts.map(async (post) => {
+  //     return {
+  //       ...post,
+  //       date: post.date.toISOString(),
+  //     };
+  //   })
+  // );
+  const newPosts = posts.map((post) => {
+    return {
+      ...post,
+      date: post.date.toISOString(),
+    };
+  });
 
   return {
     props: {
