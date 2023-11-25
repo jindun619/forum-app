@@ -114,6 +114,7 @@ export default function UpdatePage() {
         <input
           type="submit"
           onClick={handleClick}
+          value="편집"
           className="mt-3 btn btn-neutral text-xl"
         />
       </div>
