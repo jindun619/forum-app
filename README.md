@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🎬포럼앱
 
-## Getting Started
+https://josungmin-forum.vercel.app/
 
-First, run the development server:
+## 📚 사용 스택
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white)![Typescript](https://img.shields.io/badge/Typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)![Prisma](https://img.shields.io/badge/Prisma-3982CE?style=for-the-badge&logo=Prisma&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)![DaisyUI](https://img.shields.io/badge/daisyui-5A0EF8?style=for-the-badge&logo=daisyui&logoColor=white)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 💡기능들
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### **Index 페이지**
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- 모든 게시글 표시
+- 게시글 작성 버튼
 
-## Learn More
+![index](./readmeImg/index.png)
 
-To learn more about Next.js, take a look at the following resources:
+### **로그인 페이지**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- 카카오 소셜 로그인 기능 (이름, 프로필 사진)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+![index](./readmeImg/login.png)
 
-## Deploy on Vercel
+### **게시글 작성 페이지**
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- 로그인 후 제목과 내용 입력 후 게시글 등록 가능
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+![index](./readmeImg/write.png)
+
+### **게시글 페이지**
+
+- 게시글 제목, 내용, 작성자, 작성 일자/시간 등 정보 표시
+- 작성자는 게시글 편집/삭제 가능
+- 로그인 후 댓글 작성 기능, 댓글 작성자는 댓글 삭제 가능
+
+![index](./readmeImg/post.png)
+
+### **게시글 편집 페이지**
+
+- 게시글 작성자만 접근 가능
+- 게시글 제목과 내용 수정 후 등록 가능
+
+![index](./readmeImg/update.png)
