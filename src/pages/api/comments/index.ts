@@ -1,7 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { PrismaClient } from "@prisma/client";
-
-const client = new PrismaClient();
+import prisma from "@/lib/db";
 
 export default async function handler(
   req: NextApiRequest,
@@ -21,12 +19,12 @@ export default async function handler(
         },
       },
     };
-    await client.comment.create({
+    await prisma.comment.create({
       data: comment,
     });
     res.json({ message: req.body });
   } else if (req.method === "GET") {
-    const comments = await client.comment.findMany();
+    const comments = await prisma.comment.findMany();
     res.json(comments);
   }
 }

@@ -1,7 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { PrismaClient } from "@prisma/client";
-
-const client = new PrismaClient();
+import prisma from "@/lib/db";
 
 export default async function handler(
   req: NextApiRequest,
@@ -9,7 +7,7 @@ export default async function handler(
 ) {
   if (req.method === "GET") {
     if (req.query.id) {
-      const post = await client.post.findUnique({
+      const post = await prisma.post.findUnique({
         where: {
           id: +req.query.id,
         },
@@ -19,7 +17,7 @@ export default async function handler(
   } else if (req.method === "PATCH") {
     if (req.query.id) {
       const curDate = new Date()
-      await client.post.update({
+      await prisma.post.update({
         where: {
           id: +req.query.id,
         },
@@ -35,7 +33,7 @@ export default async function handler(
     }
   } else if (req.method === "DELETE") {
     if (req.query.id) {
-      await client.post.delete({
+      await prisma.post.delete({
         where: {
           id: +req.query.id,
         },

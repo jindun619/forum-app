@@ -28,10 +28,6 @@ export default function IndexPage({ posts }: any) {
     })();
   }, []);
 
-  useEffect(() => {
-    console.log(userNames);
-  }, [userNames]);
-
   return (
     <>
       <div className="mt-10">
@@ -60,14 +56,6 @@ export default function IndexPage({ posts }: any) {
 export const getServerSideProps: GetServerSideProps = async () => {
   const posts = await prisma.post.findMany();
 
-  // const newPosts = await Promise.all(
-  //   posts.map(async (post) => {
-  //     return {
-  //       ...post,
-  //       date: post.date.toISOString(),
-  //     };
-  //   })
-  // );
   const newPosts = posts.map((post) => {
     return {
       ...post,

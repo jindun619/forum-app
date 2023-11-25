@@ -1,7 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { PrismaClient } from "@prisma/client";
-
-const client = new PrismaClient();
+import prisma from "@/lib/db";
 
 export default async function handler(
   req: NextApiRequest,
@@ -17,14 +15,12 @@ export default async function handler(
         },
       },
     };
-    await client.post.create({
+    await prisma.post.create({
       data: post,
     });
     res.json({ message: req.body });
   } else if (req.method === "GET") {
-    const posts = await client.post.findMany();
+    const posts = await prisma.post.findMany();
     res.json(posts);
   }
 }
-
-//why?
