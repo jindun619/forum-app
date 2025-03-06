@@ -1,4 +1,4 @@
-# 🎬 Forum App
+# 🎬 Forum Web
 
 https://jindun-forum.vercel.app/
 
@@ -48,7 +48,7 @@ https://jindun-forum.vercel.app/
 
 ## About the Project
 
-Forum App is a web application built with **Next.js** and **TypeScript**, designed to provide a simple and interactive forum experience. Users can log in via **Kakao** using **NextAuth.js**, create posts, and leave comments. The backend is powered by **Vercel's PostgreSQL** database, managed with **Prisma** as the ORM. The UI is styled with **TailwindCSS** and **DaisyUI** for a clean and responsive design.
+Forum Web is a web application built with **Next.js** and **TypeScript**, designed to provide a simple and interactive forum experience. Users can log in via **Kakao** using **NextAuth.js**, create posts, and leave comments. The backend is powered by **Vercel's PostgreSQL** database, managed with **Prisma** as the ORM. The UI is styled with **TailwindCSS** and **DaisyUI** for a clean and responsive design.
 
 ### Key Learnings
 
